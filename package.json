@@ -1,0 +1,41 @@
+{
+  "name": "ddf-time-utils",
+  "version": "0.1.0",
+  "description": "Gapminder DDF time utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run eslint && ./node_modules/.bin/mocha \"test/**/*.spec.js\"",
+    "n-test": "./node_modules/.bin/mocha \"test/**/*.spec.js\"",
+    "test-travis": "npm run eslint && ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec test/**/*.spec.js && ./node_modules/.bin/codecov",
+    "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore  --ext js --fix . .config"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valor-software/ddf-time-utils.git"
+  },
+  "keywords": [
+    "Gapminder",
+    "DDF"
+  ],
+  "author": "Vyacheslav Chub<vyacheslav.chub@valor-software.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/valor-software/ddf-time-utils/issues"
+  },
+  "homepage": "https://github.com/valor-software/ddf-time-utils#readme",
+  "dependencies": {
+    "lodash": "4.7.0"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "codecov": "1.0.1",
+    "eslint": "2.6.0",
+    "eslint-config-valorsoft": "0.0.9",
+    "istanbul": "0.4.2",
+    "mocha": "2.4.5",
+    "sinon": "1.17.3",
+    "sinon-chai": "2.8.0",
+    "shelljs": "0.6.0",
+    "compare-version": "0.1.2"
+  }
+}
