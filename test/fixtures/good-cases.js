@@ -6,8 +6,8 @@ module.exports = {
   [ddfTimeUtils.YEAR_TYPE]: {
     simple: ['1990'],
     multiple: {
-      query: ['1800', ['2013', '2015'], '2017'],
-      result: ['1800', '2013', '2014', '2015', '2017']
+      query: ['1800', ['2013', '2015'], '2017', '980'],
+      result: ['1800', '2013', '2014', '2015', '2017', '980']
     }
   },
   [ddfTimeUtils.QUARTER_TYPE]: {

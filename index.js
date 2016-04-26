@@ -16,11 +16,11 @@ const MONTH_TYPE = Symbol.for('MONTH_TYPE');
 const WEEK_TYPE = Symbol.for('WEEK_TYPE');
 const DATE_TYPE = Symbol.for('DATE_TYPE');
 
-const YEAR_PATTERN = /^(\d{4})$/;
-const QUARTER_PATTERN = /^(\d{4})q(\d{1})$/;
-const MONTH_PATTERN = /^(\d{4})(\d{2})$/;
-const WEEK_PATTERN = /^(\d{4})w(\d{1,2})$/;
-const DATE_PATTERN = /^(\d{4})(\d{2})(\d{2})$/;
+const YEAR_PATTERN = /^(\d{3,4})$/;
+const QUARTER_PATTERN = /^(\d{3,4})q(\d{1})$/;
+const MONTH_PATTERN = /^(\d{3,4})(\d{2})$/;
+const WEEK_PATTERN = /^(\d{3,4})w(\d{1,2})$/;
+const DATE_PATTERN = /^(\d{3,4})(\d{2})(\d{2})$/;
 
 const TIME_TYPE_PATTERNS = {
   [YEAR_TYPE]: YEAR_PATTERN,
