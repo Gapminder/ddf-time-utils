@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/valor-software/ddf-time-utils#readme",
   "dependencies": {
+    "moment": "2.14.1",
     "lodash": "4.7.0"
   },
   "devDependencies": {
