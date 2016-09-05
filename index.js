@@ -178,11 +178,9 @@ function getTimeRange(query) {
   * @return parseTimeResult
 */
 function parseTime(timeString) {
-
   const type = detectTimeType(timeString);
 
   if (!type) {
-    console.log("error type", type);
     return null;
   }
 
@@ -190,18 +188,15 @@ function parseTime(timeString) {
   const timeMoment = moment.utc(timeString, patternDate);
   const timeType = Symbol.keyFor(type);
 
-  if(!timeMoment.isValid()) {
-    console.log("error time", patternDate, timeType);
+  if (!timeMoment.isValid()) {
     return null;
   }
 
   return {
-    original: timeString,
     type: timeType,
-    parsed: timeMoment.valueOf()
-  }
+    time: timeMoment.valueOf()
+  };
 }
-
 
 exports.YEAR_TYPE = YEAR_TYPE;
 exports.QUARTER_TYPE = QUARTER_TYPE;
