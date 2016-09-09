@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
+const moment = require('moment');
 
 const TWO_DIGITS_MIN_NUMBER = 10;
 const MAX_MONTH = 12;
@@ -23,17 +24,32 @@ const WEEK_PATTERN = /^(\d{3,4})w(\d{1,2})$/;
 const DATE_PATTERN = /^(\d{3,4})(\d{2})(\d{2})$/;
 
 const TIME_TYPE_PATTERNS = {
-  [YEAR_TYPE]: YEAR_PATTERN,
-  [QUARTER_TYPE]: QUARTER_PATTERN,
-  [MONTH_TYPE]: MONTH_PATTERN,
-  [WEEK_TYPE]: WEEK_PATTERN,
-  [DATE_TYPE]: DATE_PATTERN
+  [YEAR_TYPE]: {
+    regularExp: YEAR_PATTERN,
+    patternDate: 'YYYY'
+  },
+  [QUARTER_TYPE]: {
+    regularExp: QUARTER_PATTERN,
+    patternDate: 'YYYY Q'
+  },
+  [MONTH_TYPE]: {
+    regularExp: MONTH_PATTERN,
+    patternDate: 'YYYYMM'
+  },
+  [WEEK_TYPE]: {
+    regularExp: WEEK_PATTERN,
+    patternDate: 'YYYY W'
+  },
+  [DATE_TYPE]: {
+    regularExp: DATE_PATTERN,
+    patternDate: 'YYYYMMDD'
+  }
 };
 
 function extractLocalTimeRange(type) {
   function parse(option) {
-    const matchStart = TIME_TYPE_PATTERNS[type].exec(option[0]);
-    const matchEnd = TIME_TYPE_PATTERNS[type].exec(option[1]);
+    const matchStart = TIME_TYPE_PATTERNS[type].regularExp.exec(option[0]);
+    const matchEnd = TIME_TYPE_PATTERNS[type].regularExp.exec(option[1]);
 
     return {
       start: [matchStart[FIRST_MATCH], matchStart[SECOND_MATCH], matchStart[THIRD_MATCH]],
@@ -118,7 +134,7 @@ function detectTimeType(timeQuery) {
   const timeTypes = _.uniq(_.flatten(
     plainTimeQuery
       .map(queryDetail => Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS)
-        .filter(type => TIME_TYPE_PATTERNS[type].test(queryDetail)))
+        .filter(type => TIME_TYPE_PATTERNS[type].regularExp.test(queryDetail)))
   ));
 
   return timeTypes.length === 1 ? _.head(timeTypes) : null;
@@ -152,6 +168,36 @@ function getTimeRange(query) {
   ));
 }
 
+/*
+  *
+  * Structure parseTimeResult, Object
+  *   @attribute time, Int UTC milliseconds
+  *   @attribute type, String One of available values "YEAR_TYPE"|"QUARTER_TYPE"|"MONTH_TYPE"|"WEEK_TYPE"|"DATE_TYPE"
+  *
+  * @param timeString, String
+  * @return parseTimeResult
+*/
+function parseTime(timeString) {
+  const type = detectTimeType(timeString);
+
+  if (!type) {
+    return null;
+  }
+
+  const patternDate = TIME_TYPE_PATTERNS[type].patternDate;
+  const timeMoment = moment.utc(timeString, patternDate);
+  const timeType = Symbol.keyFor(type);
+
+  if (!timeMoment.isValid()) {
+    return null;
+  }
+
+  return {
+    type: timeType,
+    time: timeMoment.valueOf()
+  };
+}
+
 exports.YEAR_TYPE = YEAR_TYPE;
 exports.QUARTER_TYPE = QUARTER_TYPE;
 exports.MONTH_TYPE = MONTH_TYPE;
@@ -159,3 +205,7 @@ exports.WEEK_TYPE = WEEK_TYPE;
 exports.DATE_TYPE = DATE_TYPE;
 exports.getTimeRange = getTimeRange;
 exports.detectTimeType = detectTimeType;
+exports.parseTime = parseTime;
+
+exports.TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
+exports.TIME_TYPES_AS_STRINGS = exports.TIME_TYPES.map(Symbol.keyFor);
