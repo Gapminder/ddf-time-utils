@@ -3,6 +3,8 @@
 const _ = require('lodash');
 const moment = require('moment');
 
+const Symbol = require('es6-symbol');
+
 const TWO_DIGITS_MIN_NUMBER = 10;
 const MAX_MONTH = 12;
 const MAX_DAY = 31;
@@ -169,14 +171,14 @@ function getTimeRange(query) {
 }
 
 /*
-  *
-  * Structure parseTimeResult, Object
-  *   @attribute time, Int UTC milliseconds
-  *   @attribute type, String One of available values "YEAR_TYPE"|"QUARTER_TYPE"|"MONTH_TYPE"|"WEEK_TYPE"|"DATE_TYPE"
-  *
-  * @param timeString, String
-  * @return parseTimeResult
-*/
+ *
+ * Structure parseTimeResult, Object
+ *   @attribute time, Int UTC milliseconds
+ *   @attribute type, String One of available values "YEAR_TYPE"|"QUARTER_TYPE"|"MONTH_TYPE"|"WEEK_TYPE"|"DATE_TYPE"
+ *
+ * @param timeString, String
+ * @return parseTimeResult
+ */
 function parseTime(timeString) {
   const type = detectTimeType(timeString);
 

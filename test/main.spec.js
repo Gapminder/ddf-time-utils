@@ -6,6 +6,7 @@ const expect = chai.expect;
 const ddfTimeUtils = require('../');
 const goodCasesFixtures = require('./fixtures/good-cases');
 const incorrectQueries = require('./fixtures/incorrect-queries');
+const Symbol = require('es6-symbol');
 
 chai.use(sinonChai);
 
