@@ -4,6 +4,7 @@ const _ = require('lodash');
 const moment = require('moment');
 
 const Symbol = require('es6-symbol/polyfill');
+const getOwnPropertySymbols = require('get-own-property-symbols');
 
 const TWO_DIGITS_MIN_NUMBER = 10;
 const MAX_MONTH = 12;
@@ -135,7 +136,7 @@ function detectTimeType(timeQuery) {
   const plainTimeQuery = _.isArray(timeQuery) ? _.flatten(timeQuery) : [timeQuery];
   const timeTypes = _.uniq(_.flatten(
     plainTimeQuery
-      .map(queryDetail => Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS)
+      .map(queryDetail => getOwnPropertySymbols(TIME_TYPE_PATTERNS)
         .filter(type => TIME_TYPE_PATTERNS[type].regularExp.test(queryDetail)))
   ));
 
@@ -209,5 +210,5 @@ exports.getTimeRange = getTimeRange;
 exports.detectTimeType = detectTimeType;
 exports.parseTime = parseTime;
 
-exports.TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
+exports.TIME_TYPES = getOwnPropertySymbols(TIME_TYPE_PATTERNS);
 exports.TIME_TYPES_AS_STRINGS = exports.TIME_TYPES.map(Symbol.keyFor);
