@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const Symbol = require('es6-symbol');
+const Symbol = require('es6-symbol/polyfill');
 
 const TWO_DIGITS_MIN_NUMBER = 10;
 const MAX_MONTH = 12;
