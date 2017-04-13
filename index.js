@@ -49,6 +49,13 @@ const TIME_TYPE_PATTERNS = {
   }
 };
 
+const TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
+const TIME_TYPES_AS_STRINGS = TIME_TYPES.map(Symbol.keyFor);
+const TIME_TYPES_DDF_COMPATIBLE = _.concat(
+  'time',
+  TIME_TYPES_AS_STRINGS.map(key => key.replace(/_TYPE/, '').toLowerCase())
+);
+
 function extractLocalTimeRange(type) {
   function parse(option) {
     const matchStart = TIME_TYPE_PATTERNS[type].regularExp.exec(option[0]);
@@ -210,5 +217,6 @@ exports.getTimeRange = getTimeRange;
 exports.detectTimeType = detectTimeType;
 exports.parseTime = parseTime;
 
-exports.TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
-exports.TIME_TYPES_AS_STRINGS = exports.TIME_TYPES.map(Symbol.keyFor);
+exports.TIME_TYPES = TIME_TYPES;
+exports.TIME_TYPES_AS_STRINGS = TIME_TYPES_AS_STRINGS;
+exports.TIME_TYPES_DDF_COMPATIBLE = TIME_TYPES_DDF_COMPATIBLE;

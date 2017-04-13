@@ -44,6 +44,20 @@ describe('DDF time utils', () => {
     });
   });
 
+  describe('when detect ddf compatible time types', () => {
+    it('should types quantity be expected', () => {
+      const EXPECTED_TYPES_QUANTITY = 6;
+
+      expect(ddfTimeUtils.TIME_TYPES_DDF_COMPATIBLE.length).to.equal(EXPECTED_TYPES_QUANTITY);
+    });
+
+    it('should types content be expected', () => {
+      const EXPECTED_TYPES_CONTENT = ['time', 'year', 'quarter', 'month', 'week', 'date'];
+
+      expect(_.isEqual(ddfTimeUtils.TIME_TYPES_DDF_COMPATIBLE, EXPECTED_TYPES_CONTENT)).to.be.true;
+    });
+  });
+
   describe('when detect time type', () => {
     it('should year detection be correct', () => {
       const result = ddfTimeUtils.detectTimeType('2000');
