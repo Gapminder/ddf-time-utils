@@ -29,23 +29,28 @@ const DATE_PATTERN = /^(\d{3,4})(\d{2})(\d{2})$/;
 const TIME_TYPE_PATTERNS = {
   [YEAR_TYPE]: {
     regularExp: YEAR_PATTERN,
-    patternDate: 'YYYY'
+    patternDate: 'YYYY',
+    formatDate: 'YYYY'
   },
   [QUARTER_TYPE]: {
     regularExp: QUARTER_PATTERN,
-    patternDate: 'YYYY Q'
+    patternDate: 'YYYY Q',
+    formatDate: 'YYYY[q]Q'
   },
   [MONTH_TYPE]: {
     regularExp: MONTH_PATTERN,
-    patternDate: 'YYYYMM'
+    patternDate: 'YYYYMM',
+    formatDate: 'YYYYMM'
   },
   [WEEK_TYPE]: {
     regularExp: WEEK_PATTERN,
-    patternDate: 'YYYY W'
+    patternDate: 'YYYY W',
+    formatDate: 'YYYY[w]W'
   },
   [DATE_TYPE]: {
     regularExp: DATE_PATTERN,
-    patternDate: 'YYYYMMDD'
+    patternDate: 'YYYYMMDD',
+    formatDate: 'YYYYMMDD'
   }
 };
 
@@ -208,6 +213,14 @@ function parseTime(timeString) {
   };
 }
 
+function formatTime(timeDescriptor) {
+  const {millis, timeType} = timeDescriptor;
+  const TYPE = timeType ? Symbol.for(timeType) : Symbol.for('YEAR_TYPE');
+  const formatDatePattern = TIME_TYPE_PATTERNS[TYPE].formatDate;
+
+  return moment(millis).utc().format(formatDatePattern);
+}
+
 exports.YEAR_TYPE = YEAR_TYPE;
 exports.QUARTER_TYPE = QUARTER_TYPE;
 exports.MONTH_TYPE = MONTH_TYPE;
@@ -216,6 +229,7 @@ exports.DATE_TYPE = DATE_TYPE;
 exports.getTimeRange = getTimeRange;
 exports.detectTimeType = detectTimeType;
 exports.parseTime = parseTime;
+exports.formatTime = formatTime;
 
 exports.TIME_TYPES = TIME_TYPES;
 exports.TIME_TYPES_AS_STRINGS = TIME_TYPES_AS_STRINGS;
