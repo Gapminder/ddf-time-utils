@@ -2,12 +2,18 @@
   "name": "ddf-time-utils",
   "version": "0.1.10",
   "description": "Gapminder DDF time utils",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "test": "npm run eslint && ./node_modules/.bin/mocha \"test/**/*.spec.js\"",
-    "n-test": "./node_modules/.bin/mocha \"test/**/*.spec.js\"",
-    "test-travis": "npm run eslint && ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec test/**/*.spec.js && ./node_modules/.bin/codecov",
-    "eslint": "./node_modules/.bin/eslint --ignore-path .gitignore  --ext js --fix . .config"
+    "build": "tsc",
+    "test": "npm run build && mocha --timeout 200000 --compilers ts:ts-node/register --recursive test/**/*.spec.ts",
+    "n-test": "npm run build && mocha --timeout 200000 --compilers ts:ts-node/register --recursive test/**/*.spec.ts",
+    "test-travis": "istanbul cover mocha _mocha -- -R spec --timeout 200000 --compilers ts:ts-node/register --recursive test/**/*.spec.ts && codecov",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -p angular",
+    "github-release": "conventional-github-releaser -p angular",
+    "prepublish": "npm run build",
+    "preversion": "npm test",
+    "version": "npm run changelog && git add CHANGELOG.md",
+    "postversion": "git push origin master && git push --tags && npm run github-release"
   },
   "repository": {
     "type": "git",
@@ -24,20 +30,28 @@
   },
   "homepage": "https://github.com/valor-software/ddf-time-utils#readme",
   "dependencies": {
-    "core-js": "2.4.1",
-    "lodash": "4.7.0",
-    "moment": "2.14.1"
+    "@types/lodash": "4.14.85",
+    "@types/moment": "2.13.0",
+    "@types/node": "8.0.53",
+    "lodash": "4.17.4",
+    "moment": "2.19.2"
   },
   "devDependencies": {
-    "chai": "3.5.0",
-    "codecov": "1.0.1",
-    "eslint": "2.6.0",
-    "eslint-config-valorsoft": "0.0.9",
-    "istanbul": "0.4.2",
-    "mocha": "2.4.5",
-    "sinon": "1.17.3",
-    "sinon-chai": "2.8.0",
-    "shelljs": "0.6.0",
-    "compare-version": "0.1.2"
+    "@types/chai": "4.0.5",
+    "@types/deep-diff": "0.0.31",
+    "@types/es6-shim": "0.31.35",
+    "@types/mocha": "2.2.44",
+    "chai": "4.1.2",
+    "codecov": "3.0.0",
+    "compare-version": "0.1.2",
+    "conventional-changelog": "1.1.7",
+    "conventional-changelog-cli": "1.3.5",
+    "conventional-github-releaser": "2.0.0",
+    "istanbul": "0.4.5",
+    "mocha": "4.0.1",
+    "sinon": "4.1.2",
+    "sinon-chai": "2.14.0",
+    "ts-node": "^3.3.0",
+    "typescript": "2.6.1"
   }
 }

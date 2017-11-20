@@ -1,10 +1,5 @@
-'use strict';
-
-const Symbol = require('core-js/library/es6/symbol');
-const Object = require('core-js/library/es6/object');
-
-const _ = require('lodash');
-const moment = require('moment');
+import { uniq, head, isString, isArray, compact, flatten, concat, range } from 'lodash';
+import { utc } from 'moment';
 
 const TWO_DIGITS_MIN_NUMBER = 10;
 const MAX_MONTH = 12;
@@ -14,11 +9,11 @@ const SECOND_MATCH = 2;
 const THIRD_MATCH = 3;
 const THIRD_ELEMENT = 2;
 
-const YEAR_TYPE = Symbol.for('YEAR_TYPE');
-const QUARTER_TYPE = Symbol.for('QUARTER_TYPE');
-const MONTH_TYPE = Symbol.for('MONTH_TYPE');
-const WEEK_TYPE = Symbol.for('WEEK_TYPE');
-const DATE_TYPE = Symbol.for('DATE_TYPE');
+export const YEAR_TYPE = Symbol.for('YEAR_TYPE');
+export const QUARTER_TYPE = Symbol.for('QUARTER_TYPE');
+export const MONTH_TYPE = Symbol.for('MONTH_TYPE');
+export const WEEK_TYPE = Symbol.for('WEEK_TYPE');
+export const DATE_TYPE = Symbol.for('DATE_TYPE');
 
 const YEAR_PATTERN = /^(\d{3,4})$/;
 const QUARTER_PATTERN = /^(\d{3,4})q(\d{1})$/;
@@ -54,9 +49,9 @@ const TIME_TYPE_PATTERNS = {
   }
 };
 
-const TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
-const TIME_TYPES_AS_STRINGS = TIME_TYPES.map(Symbol.keyFor);
-const TIME_TYPES_DDF_COMPATIBLE = _.concat(
+export const TIME_TYPES = Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS);
+export const TIME_TYPES_AS_STRINGS = TIME_TYPES.map(Symbol.keyFor);
+export const TIME_TYPES_DDF_COMPATIBLE = concat(
   'time',
   TIME_TYPES_AS_STRINGS.map(key => key.replace(/_TYPE/, '').toLowerCase())
 );
@@ -84,11 +79,11 @@ function extractLocalTimeRange(type) {
       return settings.isAppendZero && value < TWO_DIGITS_MIN_NUMBER;
     }
 
-    _.range(startYear, endYear + 1).forEach(year => {
+    range(startYear, endYear + 1).forEach(year => {
       const startValue = year === startYear ? startSecondMatch : settings.minLimit;
       const endValue = year === endYear ? endSecondMatch : settings.maxLimit;
 
-      _.range(startValue, endValue + 1).forEach(valueParam => {
+      range(startValue, endValue + 1).forEach(valueParam => {
         const value = isZeroAppendNeeded(valueParam) ? `0${valueParam}` : valueParam;
 
         result.push(year + settings.divider + value);
@@ -104,7 +99,7 @@ function extractLocalTimeRange(type) {
       const sYear = Number(parsed.start[0]);
       const fYear = Number(parsed.end[0]);
 
-      return _.range(sYear, fYear + 1)
+      return range(sYear, fYear + 1)
         .map(year => `${year}`);
     },
     [QUARTER_TYPE]: option => getTypicalRange(option, {minLimit: 1, maxLimit: 4, divider: 'q', isAppendZero: false}),
@@ -120,16 +115,16 @@ function extractLocalTimeRange(type) {
       const startDay = Number(parsed.start[THIRD_ELEMENT]);
       const endDay = Number(parsed.end[THIRD_ELEMENT]);
 
-      _.range(startYear, endYear + 1).forEach(year => {
+      range(startYear, endYear + 1).forEach(year => {
         const currentStartMonth = year === startYear ? startMonth : 1;
         const currentEndMonth = year === endYear ? endMonth : MAX_MONTH;
 
-        _.range(currentStartMonth, currentEndMonth + 1).forEach(month => {
+        range(currentStartMonth, currentEndMonth + 1).forEach(month => {
           const monthStr = month < TWO_DIGITS_MIN_NUMBER ? `0${month}` : month;
           const currentStartDay = year === startYear && month === currentStartMonth ? startDay : 1;
           const currentEndDay = year === endYear && month === currentEndMonth ? endDay : MAX_DAY;
 
-          _.range(currentStartDay, currentEndDay + 1).forEach(day => {
+          range(currentStartDay, currentEndDay + 1).forEach(day => {
             const dayStr = day < TWO_DIGITS_MIN_NUMBER ? `0${day}` : day;
 
             result.push(`${year}${monthStr}${dayStr}`);
@@ -144,18 +139,18 @@ function extractLocalTimeRange(type) {
   return OPTIONS[type];
 }
 
-function detectTimeType(timeQuery) {
-  const plainTimeQuery = _.isArray(timeQuery) ? _.flatten(timeQuery) : [timeQuery];
-  const timeTypes = _.uniq(_.flatten(
+export function detectTimeType(timeQuery) {
+  const plainTimeQuery = isArray(timeQuery) ? flatten(timeQuery) : [timeQuery];
+  const timeTypes = uniq(flatten(
     plainTimeQuery
       .map(queryDetail => Object.getOwnPropertySymbols(TIME_TYPE_PATTERNS)
         .filter(type => TIME_TYPE_PATTERNS[type].regularExp.test(queryDetail)))
   ));
 
-  return timeTypes.length === 1 ? _.head(timeTypes) : null;
+  return timeTypes.length === 1 ? head(timeTypes) : null;
 }
 
-function getTimeRange(query) {
+export function getTimeRange(query) {
   const type = detectTimeType(query);
 
   if (!type) {
@@ -167,18 +162,18 @@ function getTimeRange(query) {
   function getTimeByQueryType(option) {
     let result = null;
 
-    if (_.isString(option)) {
+    if (isString(option)) {
       result = option;
     }
 
-    if (_.isArray(option)) {
+    if (isArray(option)) {
       result = extractor(option);
     }
 
     return result;
   }
 
-  return _.compact(_.flatten(
+  return compact(flatten(
     query.map(option => getTimeByQueryType(option))
   ));
 }
@@ -192,7 +187,7 @@ function getTimeRange(query) {
  * @param timeString, String
  * @return parseTimeResult
  */
-function parseTime(timeString) {
+export function parseTime(timeString) {
   const type = detectTimeType(timeString);
 
   if (!type) {
@@ -200,7 +195,7 @@ function parseTime(timeString) {
   }
 
   const patternDate = TIME_TYPE_PATTERNS[type].patternDate;
-  const timeMoment = moment.utc(timeString, patternDate);
+  const timeMoment = utc(timeString, patternDate);
   const timeType = Symbol.keyFor(type);
 
   if (!timeMoment.isValid()) {
@@ -213,24 +208,10 @@ function parseTime(timeString) {
   };
 }
 
-function formatTime(timeDescriptor) {
+export function formatTime(timeDescriptor) {
   const {millis, timeType} = timeDescriptor;
   const TYPE = timeType ? Symbol.for(timeType) : Symbol.for('YEAR_TYPE');
   const formatDatePattern = TIME_TYPE_PATTERNS[TYPE].formatDate;
 
-  return moment(millis).utc().format(formatDatePattern);
+  return utc(millis).format(formatDatePattern);
 }
-
-exports.YEAR_TYPE = YEAR_TYPE;
-exports.QUARTER_TYPE = QUARTER_TYPE;
-exports.MONTH_TYPE = MONTH_TYPE;
-exports.WEEK_TYPE = WEEK_TYPE;
-exports.DATE_TYPE = DATE_TYPE;
-exports.getTimeRange = getTimeRange;
-exports.detectTimeType = detectTimeType;
-exports.parseTime = parseTime;
-exports.formatTime = formatTime;
-
-exports.TIME_TYPES = TIME_TYPES;
-exports.TIME_TYPES_AS_STRINGS = TIME_TYPES_AS_STRINGS;
-exports.TIME_TYPES_DDF_COMPATIBLE = TIME_TYPES_DDF_COMPATIBLE;
