@@ -1,6 +1,6 @@
 {
   "name": "ddf-time-utils",
-  "version": "0.1.7",
+  "version": "0.1.10",
   "description": "Gapminder DDF time utils",
   "main": "./lib/index.js",
   "scripts": {

@@ -24,23 +24,28 @@ const DATE_PATTERN = /^(\d{3,4})(\d{2})(\d{2})$/;
 const TIME_TYPE_PATTERNS = {
   [YEAR_TYPE]: {
     regularExp: YEAR_PATTERN,
-    patternDate: 'YYYY'
+    patternDate: 'YYYY',
+    formatDate: 'YYYY'
   },
   [QUARTER_TYPE]: {
     regularExp: QUARTER_PATTERN,
-    patternDate: 'YYYY Q'
+    patternDate: 'YYYY Q',
+    formatDate: 'YYYY[q]Q'
   },
   [MONTH_TYPE]: {
     regularExp: MONTH_PATTERN,
-    patternDate: 'YYYYMM'
+    patternDate: 'YYYYMM',
+    formatDate: 'YYYYMM'
   },
   [WEEK_TYPE]: {
     regularExp: WEEK_PATTERN,
-    patternDate: 'YYYY W'
+    patternDate: 'YYYY W',
+    formatDate: 'YYYY[w]W'
   },
   [DATE_TYPE]: {
     regularExp: DATE_PATTERN,
-    patternDate: 'YYYYMMDD'
+    patternDate: 'YYYYMMDD',
+    formatDate: 'YYYYMMDD'
   }
 };
 
@@ -201,4 +206,12 @@ export function parseTime(timeString) {
     type: timeType,
     time: timeMoment.valueOf()
   };
+}
+
+export function formatTime(timeDescriptor) {
+  const {millis, timeType} = timeDescriptor;
+  const TYPE = timeType ? Symbol.for(timeType) : Symbol.for('YEAR_TYPE');
+  const formatDatePattern = TIME_TYPE_PATTERNS[TYPE].formatDate;
+
+  return utc(millis).format(formatDatePattern);
 }

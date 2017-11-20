@@ -203,4 +203,54 @@ describe('DDF time utils', () => {
       });
     });
   });
+
+  describe('when format time value', () => {
+    it('should return string with only year, due to default time type value', () => {
+      const expectedResult = '1991';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+
+    it('should return string with only year, due to choosen time type', () => {
+      const expectedResult = '1991';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis, timeType: 'YEAR_TYPE'});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+
+    it('should return string with quarter, due to choosen time type', () => {
+      const expectedResult = '1991q1';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis, timeType: 'QUARTER_TYPE'});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+
+    it('should return string with month, due to choosen time type', () => {
+      const expectedResult = '199101';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis, timeType: 'MONTH_TYPE'});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+
+    it('should return string with week, due to choosen time type', () => {
+      const expectedResult = '1991w1';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis, timeType: 'WEEK_TYPE'});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+
+    it('should return string with date, due to choosen time type', () => {
+      const expectedResult = '19910101';
+      const millis = 662688000000;
+      const result = ddfTimeUtils.formatTime({millis, timeType: 'DATE_TYPE'});
+
+      expect(result).to.be.equal(expectedResult);
+    });
+  });
 });
