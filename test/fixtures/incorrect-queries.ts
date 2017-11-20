@@ -1,5 +1,3 @@
-'use strict';
-
 const EMPTY_QUERY = Symbol.for('Empty query');
 const NOT_TIME_QUERY = Symbol.for('Not time query');
 const MULTI_TIME_QUERY = Symbol.for('Multi time query');
