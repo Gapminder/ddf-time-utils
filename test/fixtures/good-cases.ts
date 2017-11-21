@@ -1,16 +1,14 @@
-'use strict';
-
-const ddfTimeUtils = require('../../');
+import { YEAR_TYPE, QUARTER_TYPE, MONTH_TYPE, WEEK_TYPE, DATE_TYPE } from '../../src/index';
 
 module.exports = {
-  [ddfTimeUtils.YEAR_TYPE]: {
+  [YEAR_TYPE]: {
     simple: ['1990'],
     multiple: {
       query: ['1800', ['2013', '2015'], '2017', '980'],
       result: ['1800', '2013', '2014', '2015', '2017', '980']
     }
   },
-  [ddfTimeUtils.QUARTER_TYPE]: {
+  [QUARTER_TYPE]: {
     simple: ['1800q1'],
     multiple: {
       query: [['1990q1', '1992q2'], '1993q4'],
@@ -27,7 +25,7 @@ module.exports = {
         '1993q4']
     }
   },
-  [ddfTimeUtils.MONTH_TYPE]: {
+  [MONTH_TYPE]: {
     simple: ['180002'],
     multiple: {
       query: [['199011', '199201'], '199302'],
@@ -49,7 +47,7 @@ module.exports = {
         '199302']
     }
   },
-  [ddfTimeUtils.WEEK_TYPE]: {
+  [WEEK_TYPE]: {
     simple: ['1800w2'],
     multiple: {
       query: [['1990w52', '1992w01'], '1993w01'],
@@ -113,7 +111,7 @@ module.exports = {
     }
 
   },
-  [ddfTimeUtils.DATE_TYPE]: {
+  [DATE_TYPE]: {
     simple: ['18000101'],
     multiple: {
       query: [['19901220', '19920101'], '19930102'],

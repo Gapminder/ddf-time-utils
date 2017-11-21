@@ -1,13 +1,12 @@
-'use strict';
-const _ = require('lodash');
-const chai = require('chai');
-const sinonChai = require('sinon-chai');
+import * as chai from 'chai';
+import { isEqual } from 'lodash';
+
 const expect = chai.expect;
-const ddfTimeUtils = require('../');
+
+import * as ddfTimeUtils from '../src/index';
+
 const goodCasesFixtures = require('./fixtures/good-cases');
 const incorrectQueries = require('./fixtures/incorrect-queries');
-
-chai.use(sinonChai);
 
 describe('DDF time utils', () => {
   describe('when correct sets of time ranges (in fixtures/good-cases)', () => {
@@ -17,14 +16,14 @@ describe('DDF time utils', () => {
         query '${JSON.stringify(goodCasesFixtures[timeType].simple)}' be expected`, () => {
           const simpleResult = ddfTimeUtils.getTimeRange(goodCasesFixtures[timeType].simple);
 
-          expect(_.isEqual(simpleResult, goodCasesFixtures[timeType].simple)).to.be.true;
+          expect(isEqual(simpleResult, goodCasesFixtures[timeType].simple)).to.be.true;
         });
 
         it(`should time range for multiple
         query '${JSON.stringify(goodCasesFixtures[timeType].multiple.query)}' be expected`, () => {
           const multipleResult = ddfTimeUtils.getTimeRange(goodCasesFixtures[timeType].multiple.query);
 
-          expect(_.isEqual(multipleResult, goodCasesFixtures[timeType].multiple.result)).to.be.true;
+          expect(isEqual(multipleResult, goodCasesFixtures[timeType].multiple.result)).to.be.true;
         });
       });
     });
@@ -54,7 +53,7 @@ describe('DDF time utils', () => {
     it('should types content be expected', () => {
       const EXPECTED_TYPES_CONTENT = ['time', 'year', 'quarter', 'month', 'week', 'date'];
 
-      expect(_.isEqual(ddfTimeUtils.TIME_TYPES_DDF_COMPATIBLE, EXPECTED_TYPES_CONTENT)).to.be.true;
+      expect(isEqual(ddfTimeUtils.TIME_TYPES_DDF_COMPATIBLE, EXPECTED_TYPES_CONTENT)).to.be.true;
     });
   });
 
