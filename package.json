@@ -1,6 +1,6 @@
 {
   "name": "ddf-time-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Gapminder DDF time utils",
   "main": "./lib/index.js",
   "scripts": {
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/valor-software/ddf-time-utils#readme",
   "dependencies": {
-    "lodash": "4.17.10",
+    "lodash": "4.17.4",
     "moment": "2.22.2"
   },
   "devDependencies": {
