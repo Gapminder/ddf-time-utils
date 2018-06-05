@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import { isEqual } from 'lodash';
+import isEqual = require('lodash/isEqual');
 
 const expect = chai.expect;
 

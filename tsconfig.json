@@ -10,8 +10,7 @@
     "types": [
       "node",
       "mocha",
-      "chai",
-      "lodash"
+      "chai"
     ]
   },
   "include": [
