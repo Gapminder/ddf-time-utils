@@ -1,11 +1,4 @@
-import uniq = require('lodash/uniq');
-import head = require('lodash/head');
-import isString = require('lodash/isString');
-import isArray = require('lodash/isArray');
-import compact = require('lodash/compact');
-import flatten = require('lodash/flatten');
-import concat = require('lodash/concat');
-import range = require('lodash/range');
+import { uniq, head, isString, isArray, compact, flatten, concat, range } from 'lodash';
 import { utc } from 'moment';
 
 const TWO_DIGITS_MIN_NUMBER = 10;

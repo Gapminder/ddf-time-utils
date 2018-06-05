@@ -1,6 +1,6 @@
 {
   "name": "ddf-time-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Gapminder DDF time utils",
   "main": "./lib/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "moment": "2.22.2"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.109",
+    "@types/lodash": "4.14.85",
     "@types/moment": "2.13.0",
     "@types/node": "10.3.1",
     "@types/chai": "4.1.3",
